@@ -43,14 +43,36 @@ func init(){
 }
 
 func GetAllProducts(w http.ResponseWriter, r *http.Request){
+	w.Header().Set("Access-Control-Allow-Origin", "*") // Allow requests from any origin
+	w.Header().Set("Access-Control-Allow-Methods", "GET") // Allow only GET requests
+
+	//set content type to json
 	w.Header().Set("Content-Type", "application/json")
 	allproducts := getAllProducts()
 	json.NewEncoder(w).Encode(allproducts)
 }
 
 func CreateOneProduct(w http.ResponseWriter, r *http.Request){
-	w.Header().Set("Content-Type", "application/json")
-	w.Header().Set("Allow-Control-Allow-Method", "POST")
+	// Handle preflight OPTIONS request
+    if r.Method == http.MethodOptions {
+        w.Header().Set("Access-Control-Allow-Origin", "*")
+        w.Header().Set("Access-Control-Allow-Methods", "POST")
+        w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+        w.WriteHeader(http.StatusNoContent)
+        return
+    }
+
+    // Set CORS headers
+    w.Header().Set("Access-Control-Allow-Origin", "*") // Allow requests from any origin
+
+    // Set content type to JSON
+    w.Header().Set("Content-Type", "application/json")
+
+    // Check if the request method is POST
+    if r.Method != http.MethodPost {
+        http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+        return
+    }
 
 	var product models.Product
 
@@ -75,6 +97,7 @@ func CreateOneProduct(w http.ResponseWriter, r *http.Request){
 }
 
 func UpdateOneProduct(w http.ResponseWriter, r *http.Request){
+	w.Header().Set("Access-Control-Allow-Origin", "*") // Allow requests from any origin
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Allow-Control-Allow-Method", "POST")
 
@@ -88,6 +111,7 @@ func UpdateOneProduct(w http.ResponseWriter, r *http.Request){
 }
 
 func DeleteOneProduct(w http.ResponseWriter, r *http.Request){
+	w.Header().Set("Access-Control-Allow-Origin", "*") // Allow requests from any origin
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Allow-Control-Allow-Method", "POST")
 
@@ -100,12 +124,14 @@ func DeleteOneProduct(w http.ResponseWriter, r *http.Request){
 // ############################### SALE #######################################
 
 func GetAllSales(w http.ResponseWriter, r *http.Request){
+	w.Header().Set("Access-Control-Allow-Origin", "*") // Allow requests from any origin
 	w.Header().Set("Content-Type", "application/json")
 	allSales := getAllSales()
 	json.NewEncoder(w).Encode(allSales)
 }
 
 func CreateOneSale(w http.ResponseWriter, r *http.Request){
+	w.Header().Set("Access-Control-Allow-Origin", "*") // Allow requests from any origin
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Allow-Control-Allow-Method", "POST")
 

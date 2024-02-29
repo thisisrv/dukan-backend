@@ -14,9 +14,9 @@ type Product struct{
 }
 
 
-// type Sales struct{
-// 	ID 				primitive.ObjectID		`json:"_id" bson:"_id"`
-// 	Date 			string					`json:"date" bson:"date"`
-// 	Products		[]primitive.ObjectID	`json:"products" bson:"products"`
-// }
+type Sales struct{
+	ID 				primitive.ObjectID		`json:"_id" bson:"_id"`
+	Date 			string					`json:"date" bson:"date"`
+	Products		[]primitive.ObjectID	`json:"products" bson:"products"`
+}
 
