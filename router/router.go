@@ -15,6 +15,10 @@ func Router() *mux.Router{
 	router.HandleFunc("/deleteProduct/{id}",controllers.DeleteOneProduct).Methods("DELETE")	//ok
 	router.HandleFunc("/updateProduct/{id}&{field}&{value}",controllers.UpdateOneProduct).Methods("PUT")	//ok
 
+	//handle routes to Sales
+	// router.HandleFunc("/sales",controllers.GetAllSales).Methods("GET")  
+	// router.HandleFunc("/addSale",controllers.CreateOneSale).Methods("POST")	
+
 	return router
 }
 

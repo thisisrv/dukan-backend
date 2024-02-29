@@ -16,11 +16,11 @@ import (
 )
 
 const connectionString = "mongodb://localhost:27017/" //"mongodb+srv://mathswithrv:gCYWloxyVOY1PsqO@cluster0.umulikh.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
-const dbName = "Products"
 
 //IMP
 var collection *mongo.Collection
 var mongoclient *mongo.Client 
+var salesCollection *mongo.Collection
 
 //connect with mongodb
 func init(){
@@ -37,6 +37,7 @@ func init(){
 
 	mongoclient = client
 	collection = mongoclient.Database("Product").Collection("inventory")
+	salesCollection = mongoclient.Database("Product").Collection("sales")
 	fmt.Println("Connected to DB")
 
 }
@@ -96,4 +97,36 @@ func DeleteOneProduct(w http.ResponseWriter, r *http.Request){
 }
 
 
+// ############################### SALE #######################################
 
+func GetAllSales(w http.ResponseWriter, r *http.Request){
+	w.Header().Set("Content-Type", "application/json")
+	allSales := getAllSales()
+	json.NewEncoder(w).Encode(allSales)
+}
+
+func CreateOneSale(w http.ResponseWriter, r *http.Request){
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Allow-Control-Allow-Method", "POST")
+
+	var sale models.Sales
+
+	err := json.NewDecoder(r.Body).Decode(&sale)
+
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+
+	insertSale(sale)
+
+	// Encode the product with the updated ObjectId
+    encodedProduct, err := json.Marshal(sale)
+    if err != nil {
+        log.Fatal(err)
+        return
+    }
+
+	// Write the encoded product to the response
+    w.Write(encodedProduct)
+}
