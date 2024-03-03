@@ -15,7 +15,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-const connectionString = "mongodb://localhost:27017/" //"mongodb+srv://mathswithrv:gCYWloxyVOY1PsqO@cluster0.umulikh.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+const connectionString =  "mongodb://localhost:27017/"//"mongodb+srv://mathswithrv:gCYWloxyVOY1PsqO@cluster0.umulikh.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 
 //IMP
 var collection *mongo.Collection
@@ -53,26 +53,13 @@ func GetAllProducts(w http.ResponseWriter, r *http.Request){
 }
 
 func CreateOneProduct(w http.ResponseWriter, r *http.Request){
-	// Handle preflight OPTIONS request
-    if r.Method == http.MethodOptions {
-        w.Header().Set("Access-Control-Allow-Origin", "*")
-        w.Header().Set("Access-Control-Allow-Methods", "POST")
-        w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
-        w.WriteHeader(http.StatusNoContent)
-        return
-    }
 
     // Set CORS headers
     w.Header().Set("Access-Control-Allow-Origin", "*") // Allow requests from any origin
+	w.Header().Set("Access-Control-Allow-Methods", "POST") // Allow only POST requests
 
     // Set content type to JSON
     w.Header().Set("Content-Type", "application/json")
-
-    // Check if the request method is POST
-    if r.Method != http.MethodPost {
-        http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-        return
-    }
 
 	var product models.Product
 
@@ -103,7 +90,17 @@ func UpdateOneProduct(w http.ResponseWriter, r *http.Request){
 
 	params := mux.Vars(r)
 
-	updateOneProduct(params["id"], params["field"], params["value"])
+	var product models.Product
+
+	err := json.NewDecoder(r.Body).Decode(&product)
+
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+
+	fmt.Println(params)
+	updateOneProduct(params["id"], product)
 
 	// fmt.Println(params)
 	fmt.Println("Fileds updated")
@@ -111,9 +108,12 @@ func UpdateOneProduct(w http.ResponseWriter, r *http.Request){
 }
 
 func DeleteOneProduct(w http.ResponseWriter, r *http.Request){
-	w.Header().Set("Access-Control-Allow-Origin", "*") // Allow requests from any origin
-	w.Header().Set("Content-Type", "application/json")
-	w.Header().Set("Allow-Control-Allow-Method", "POST")
+	// Set CORS headers
+    w.Header().Set("Access-Control-Allow-Origin", "*") // Allow requests from any origin
+	w.Header().Set("Access-Control-Allow-Methods", "POST") // Allow only POST requests
+
+	 // Set content type to JSON
+	 w.Header().Set("Content-Type", "application/json")
 
 	params := mux.Vars(r)
 	deleteOneProduct(params["id"])

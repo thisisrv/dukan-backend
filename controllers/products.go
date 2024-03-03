@@ -5,7 +5,7 @@ import (
 	"dukan/models"
 	"fmt"
 	"log"
-	"strconv"
+	"reflect"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
@@ -38,6 +38,7 @@ func getAllProducts() []primitive.M {
 	return lists	
 }
 
+
 func insertOneProduct(product models.Product){
 
 	//Generate a new Object id
@@ -53,7 +54,7 @@ func insertOneProduct(product models.Product){
 	fmt.Println("rows added", result.InsertedID)
 }
 
-func updateOneProduct(productId string, field string, value string){
+func updateOneProduct(productId string, product models.Product){
 	id, err := primitive.ObjectIDFromHex(productId)
 
 	if err != nil {
@@ -62,13 +63,18 @@ func updateOneProduct(productId string, field string, value string){
 
 	filter := bson.M{"_id": id}
 
-	var update bson.M
-	if field == "name"{
-		update = bson.M{"$set": bson.M{field: value}}
-	}else {
-		integerValue, _ := strconv.Atoi(value)
-		update = bson.M{"$set": bson.M{field: integerValue}}
+	update := bson.M{"$set": bson.M{}}
+
+	// Iterate over the fields of the product object
+	v := reflect.ValueOf(product)
+	for i := 1; i < v.NumField(); i++ {
+		field := v.Type().Field(i).Tag.Get("bson")
+		value := v.Field(i)
+
+		// Add the field and its value to the update
+		update["$set"].(bson.M)[field] = value
 	}
+
 
 	result, err := collection.UpdateOne(context.Background(), filter, update)
 
