@@ -90,19 +90,21 @@ func UpdateOneProduct(w http.ResponseWriter, r *http.Request){
 
 	params := mux.Vars(r)
 
-	var product models.Product
+	// var product models.Product
 
-	err := json.NewDecoder(r.Body).Decode(&product)
+	// err := json.NewDecoder(r.Body).Decode(&product)
 
+	// Decode the request body into a map[string]interface{}
+	var productData map[string]interface{}
+	err := json.NewDecoder(r.Body).Decode(&productData)
 	if err != nil {
-		log.Fatal(err)
+		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
-	fmt.Println(params)
-	updateOneProduct(params["id"], product)
+	updateOneProduct(params["id"], productData)
 
-	// fmt.Println(params)
+	fmt.Println(productData)
 	fmt.Println("Fileds updated")
 	json.NewEncoder(w).Encode(params["id"])
 }
