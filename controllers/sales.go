@@ -43,7 +43,7 @@ func insertSale(sale models.Sales){
 	sale.ID = primitive.NewObjectID()
 	
 	//PUSH to DB
-	result, err := collection.InsertOne(context.Background(), sale)
+	result, err := salesCollection.InsertOne(context.Background(), sale)
 
 	if err != nil {
 		log.Fatal(err)

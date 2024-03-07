@@ -13,10 +13,9 @@ type Product struct{
 	Selling_Price	int 				`json:"selling_price" bson:"selling_price"`
 }
 
-
 type Sales struct{
 	ID 				primitive.ObjectID		`json:"_id" bson:"_id"`
 	Date 			string					`json:"date" bson:"date"`
-	Products		[]primitive.ObjectID	`json:"products" bson:"products"`
+	Products		map[string]int			`json:"products" bson:"products"`
 }
 
