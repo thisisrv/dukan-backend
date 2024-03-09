@@ -13,9 +13,11 @@ type Product struct{
 	Selling_Price	int 				`json:"selling_price" bson:"selling_price"`
 }
 
+
 type Sales struct{
 	ID 				primitive.ObjectID		`json:"_id" bson:"_id"`
 	Date 			string					`json:"date" bson:"date"`
-	Products		map[string]int			`json:"products" bson:"products"`
+	Items		    []map[string]interface{}	`json:"items" bson:"items"`
 }
 
+//make datewise collection for sales

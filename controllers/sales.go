@@ -5,7 +5,6 @@ import (
 	"dukan/models"
 	"fmt"
 	"log"
-
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
@@ -42,8 +41,7 @@ func insertSale(sale models.Sales){
 	//Generate a new Object id
 	sale.ID = primitive.NewObjectID()
 	
-	//PUSH to DB
-	result, err := salesCollection.InsertOne(context.Background(), sale)
+	result, err := mongoclient.Database("Sales").Collection(sale.Date).InsertOne(context.Background(), sale)
 
 	if err != nil {
 		log.Fatal(err)
