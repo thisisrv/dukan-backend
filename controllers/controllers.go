@@ -15,12 +15,12 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-const connectionString =  "mongodb://localhost:27017/"//"mongodb+srv://mathswithrv:gCYWloxyVOY1PsqO@cluster0.umulikh.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
-
+// const connectionString =  "mongodb+srv://mathswithrv:gCYWloxyVOY1PsqO@cluster0.umulikh.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+const connectionString = "mongodb://localhost:27017/"
 //IMP
 var collection *mongo.Collection
 var mongoclient *mongo.Client 
-var salesCollection *mongo.Collection
+// var salesCollection *mongo.Collection
 
 //connect with mongodb
 func init(){
@@ -37,7 +37,6 @@ func init(){
 
 	mongoclient = client
 	collection = mongoclient.Database("Product").Collection("inventory")
-	salesCollection = mongoclient.Database("Product").Collection("sales")
 	fmt.Println("Connected to DB")
 
 }
@@ -90,11 +89,6 @@ func UpdateOneProduct(w http.ResponseWriter, r *http.Request){
 
 	params := mux.Vars(r)
 
-	// var product models.Product
-
-	// err := json.NewDecoder(r.Body).Decode(&product)
-
-	// Decode the request body into a map[string]interface{}
 	var productData map[string]interface{}
 	err := json.NewDecoder(r.Body).Decode(&productData)
 	if err != nil {
@@ -128,7 +122,10 @@ func DeleteOneProduct(w http.ResponseWriter, r *http.Request){
 func GetAllSales(w http.ResponseWriter, r *http.Request){
 	w.Header().Set("Access-Control-Allow-Origin", "*") // Allow requests from any origin
 	w.Header().Set("Content-Type", "application/json")
-	allSales := getAllSales()
+
+	params := mux.Vars(r)
+
+	allSales := getAllSales(params["date"])
 	json.NewEncoder(w).Encode(allSales)
 }
 

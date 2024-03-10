@@ -84,6 +84,7 @@ func updateOneProduct(productId string, product map[string]interface{}){
 
 	// Iterate over the fields of the newProduct object
 	v := reflect.ValueOf(existingProduct)
+	
 	for i := 1; i < v.NumField(); i++ {
 		field := v.Type().Field(i).Tag.Get("bson")
 		// newValue := v.Field(i).Interface()

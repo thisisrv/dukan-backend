@@ -16,7 +16,7 @@ func Router() *mux.Router{
 	router.HandleFunc("/updateProduct/{id}",controllers.UpdateOneProduct).Methods("POST")	//ok
 
 	//handle routes to Sales
-	router.HandleFunc("/sales",controllers.GetAllSales).Methods("GET")  
+	router.HandleFunc("/sales/{date}",controllers.GetAllSales).Methods("GET") 
 	router.HandleFunc("/addSale",controllers.CreateOneSale).Methods("POST")	
 
 	return router
