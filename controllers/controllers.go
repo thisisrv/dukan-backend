@@ -15,8 +15,8 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-// const connectionString =  "mongodb+srv://mathswithrv:gCYWloxyVOY1PsqO@cluster0.umulikh.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
-const connectionString = "mongodb://localhost:27017/"
+const connectionString =  "mongodb+srv://mathswithrv:gCYWloxyVOY1PsqO@cluster0.umulikh.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+// const connectionString = "mongodb://localhost:27017/"
 //IMP
 var collection *mongo.Collection
 var mongoclient *mongo.Client 
