@@ -35,7 +35,6 @@ func getAllSales(date string) []interface{} {
                     // Append the item map to the sales slice
                     sales = append(sales, itemMap)
                 }
-				
             }
 			// sales = append(sales, items)
         }
